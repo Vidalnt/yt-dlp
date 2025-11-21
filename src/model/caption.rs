@@ -22,6 +22,8 @@ pub struct AutomaticCaption {
 pub enum Extension {
     /// The JSON extension.
     Json3,
+    /// The generic JSON extension.
+    Json,
     /// The Srv1 extension.
     Srv1,
     /// The Srv2 extension.
@@ -69,6 +71,7 @@ impl fmt::Display for Extension {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Extension::Json3 => write!(f, "json3"),
+            Extension::Json => write!(f, "json"),
             Extension::Srv1 => write!(f, "srv1"),
             Extension::Srv2 => write!(f, "srv2"),
             Extension::Srv3 => write!(f, "srv3"),
@@ -129,6 +132,7 @@ impl Subtitle {
     pub fn file_extension(&self) -> &str {
         match self.extension {
             Extension::Json3 => "json3",
+            Extension::Json => "json",
             Extension::Srv1 => "srv1",
             Extension::Srv2 => "srv2",
             Extension::Srv3 => "srv3",
