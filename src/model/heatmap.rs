@@ -32,6 +32,7 @@ impl HeatmapPoint {
 
 /// Represents the complete heatmap data for a video.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(transparent)]
 pub struct Heatmap {
     /// The collection of heatmap points covering the video timeline.
     pub points: Vec<HeatmapPoint>,
