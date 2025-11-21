@@ -98,7 +98,8 @@ impl Hash for Extension {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Subtitle {
     /// The language code of the subtitle (e.g., 'en', 'fr', 'es').
-    pub language_code: String,
+    #[serde(default)]
+    pub language_code: Option<String>,
     /// The full language name (e.g., 'English', 'French', 'Spanish').
     pub language_name: Option<String>,
     /// The URL of the subtitle file.
@@ -115,7 +116,7 @@ impl Subtitle {
     /// Creates a new Subtitle from an AutomaticCaption.
     pub fn from_automatic_caption(caption: &AutomaticCaption, language_code: String) -> Self {
         Self {
-            language_code,
+            language_code: Some(language_code),
             language_name: caption.name.clone(),
             url: caption.url.clone(),
             extension: caption.extension.clone(),
@@ -151,7 +152,7 @@ impl fmt::Display for Subtitle {
         write!(
             f,
             "Subtitle(lang={}, format={}, auto={})",
-            self.language_name.as_deref().unwrap_or(&self.language_code),
+            self.language_name.as_deref().or(self.language_code.as_deref()).unwrap_or("unknown"),
             self.file_extension(),
             self.is_automatic
         )
