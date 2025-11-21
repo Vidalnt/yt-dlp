@@ -227,8 +227,8 @@ impl MetadataManager {
         Self::add_metadata_with_format(&file_path, video, video_format, audio_format).await?;
 
         // Then add chapters if available
-        if !video.chapters.is_empty() {
-            Self::add_chapters_metadata(path, &video.chapters).await?;
+        if video.has_chapters() {
+            Self::add_chapters_metadata(path, video.get_chapters()).await?;
         }
 
         Ok(())

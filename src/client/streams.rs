@@ -1676,9 +1676,9 @@ impl Youtube {
     ) -> crate::error::Result<PathBuf> {
         // Convert chapter ranges to time ranges if needed
         let time_range = if range.needs_chapter_metadata() {
-            if !video.chapters.is_empty() {
+            if video.has_chapters() {
                 range
-                    .to_time_range(&video.chapters)
+                    .to_time_range(video.get_chapters())
                     .ok_or_else(|| Error::Unknown("Chapter index out of bounds".to_string()))?
             } else {
                 return Err(Error::Unknown(

@@ -65,7 +65,7 @@ pub struct Video {
     pub subtitles: HashMap<String, Vec<Subtitle>>,
     /// The chapters of the video.
     #[serde(default)]
-    pub chapters: Vec<Chapter>,
+    pub chapters: Option<Vec<Chapter>>,
     /// The heatmap data for the video (most replayed segments).
     #[serde(default)]
     pub heatmap: Option<Heatmap>,
@@ -414,7 +414,7 @@ impl Video {
     ///
     /// A slice containing all chapters in the video
     pub fn get_chapters(&self) -> &[Chapter] {
-        &self.chapters
+        self.chapters.as_deref().unwrap_or(&[])
     }
 
     /// Finds the chapter at a specific timestamp.
@@ -427,7 +427,7 @@ impl Video {
     ///
     /// The chapter containing the timestamp, or None if no chapter matches
     pub fn get_chapter_at_time(&self, timestamp: f64) -> Option<&Chapter> {
-        self.chapters
+        self.get_chapters()
             .iter()
             .find(|chapter| chapter.contains_timestamp(timestamp))
     }
@@ -438,7 +438,7 @@ impl Video {
     ///
     /// true if the video has at least one chapter, false otherwise
     pub fn has_chapters(&self) -> bool {
-        !self.chapters.is_empty()
+        !self.get_chapters().is_empty()
     }
 
     /// Returns the heatmap data for the video if available.
