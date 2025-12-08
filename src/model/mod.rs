@@ -60,11 +60,11 @@ impl<'de> Deserialize<'de> for DrmStatus {
             where
                 E: serde::de::Error,
             {
-                match value.to_lowercase().as_str() {
+                match value {
+                    "Yes" => Ok(DrmStatus::Yes),
+                    "No" => Ok(DrmStatus::No),
                     "maybe" => Ok(DrmStatus::Maybe),
-                    "yes" => Ok(DrmStatus::Yes),
-                    "no" => Ok(DrmStatus::No),
-                    _ => Err(E::custom(format!("Expected \"maybe\", \"yes\" or \"no\", got \"{}\"", value))),
+                    _ => Err(E::custom(format!("Expected \"maybe\", got \"{}\"", value))),
                 }
             }
         }

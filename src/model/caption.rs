@@ -21,9 +21,8 @@ pub struct AutomaticCaption {
 #[serde(rename_all = "snake_case")]
 pub enum Extension {
     /// The JSON extension.
-    Json3,
-    /// The generic JSON extension.
     Json,
+    Json3,
     /// The Srv1 extension.
     Srv1,
     /// The Srv2 extension.
@@ -70,8 +69,8 @@ impl Hash for AutomaticCaption {
 impl fmt::Display for Extension {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Extension::Json3 => write!(f, "json3"),
             Extension::Json => write!(f, "json"),
+            Extension::Json3 => write!(f, "json3"),
             Extension::Srv1 => write!(f, "srv1"),
             Extension::Srv2 => write!(f, "srv2"),
             Extension::Srv3 => write!(f, "srv3"),
@@ -98,7 +97,6 @@ impl Hash for Extension {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Subtitle {
     /// The language code of the subtitle (e.g., 'en', 'fr', 'es').
-    #[serde(default)]
     pub language_code: Option<String>,
     /// The full language name (e.g., 'English', 'French', 'Spanish').
     pub language_name: Option<String>,
@@ -132,8 +130,8 @@ impl Subtitle {
     /// Returns the file extension as a string.
     pub fn file_extension(&self) -> &str {
         match self.extension {
-            Extension::Json3 => "json3",
             Extension::Json => "json",
+            Extension::Json3 => "json3",
             Extension::Srv1 => "srv1",
             Extension::Srv2 => "srv2",
             Extension::Srv3 => "srv3",
@@ -152,7 +150,10 @@ impl fmt::Display for Subtitle {
         write!(
             f,
             "Subtitle(lang={}, format={}, auto={})",
-            self.language_name.as_deref().or(self.language_code.as_deref()).unwrap_or("unknown"),
+            self.language_name
+                .as_deref()
+                .or(self.language_code.as_deref())
+                .unwrap_or("unknown"),
             self.file_extension(),
             self.is_automatic
         )
